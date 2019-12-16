@@ -2,6 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import SearchBar from '../../components/search-bar'
 import ProductList from '../../components/product-list'
+import Placeholder from '../../components/placeholder'
 
 class ShopIndex extends Component {
     config = {
@@ -9,7 +10,8 @@ class ShopIndex extends Component {
     }
 
     state = {
-        products: []
+        products: [],
+        placeholder: true
     }
 
     async componentWillMount() {
@@ -17,18 +19,30 @@ class ShopIndex extends Component {
             url: `${API_WS}/products`
         })
 
-        this.setState({
-            products: response.data
-        })
+        if (process.env.NODE_ENV === 'development') {
+            setTimeout(() => {
+                this.setState({
+                    products: response.data,
+                    placeholder: false
+                })
+            }, 2000)
+        } else {
+            this.setState({
+                products: response.data,
+                placeholder: false
+            })
+        }
+
     }
 
 
     render() {
-        const { products } = this.state
+        const { products, placeholder } = this.state
 
         return (
             <View>
                 <SearchBar />
+                <Placeholder className='m-3' quantity='10' show={placeholder} />
                 <ProductList data={products} />
             </View>
         )
