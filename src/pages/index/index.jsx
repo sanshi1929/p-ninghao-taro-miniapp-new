@@ -12,19 +12,19 @@ import './index.scss'
 @connect(({ counter }) => ({
   counter
 }), (dispatch) => ({
-  add () {
+  add() {
     dispatch(add())
   },
-  dec () {
+  dec() {
     dispatch(minus())
   },
-  asyncAdd () {
+  asyncAdd() {
     dispatch(asyncAdd())
   }
 }))
 class Index extends Component {
 
-    config = {
+  config = {
     navigationBarTitleText: '首页'
   }
 
@@ -32,30 +32,30 @@ class Index extends Component {
     products: []
   }
 
-  async componentWillMount(){
+  async componentWillMount() {
     const response = await Taro.request({
-      url: `${ API_WS }/products`
+      url: `${API_WS}/products`
     })
 
     this.setState({
-      products:response.data
+      products: response.data
     })
     console.log(response)
   }
-  
-  componentWillReceiveProps (nextProps) {
+
+  componentWillReceiveProps(nextProps) {
     console.log(this.props, nextProps)
   }
 
-  componentWillUnmount () { }
+  componentWillUnmount() { }
 
-  componentDidShow () { }
+  componentDidShow() { }
 
-  componentDidHide () { }
+  componentDidHide() { }
 
-  
 
-  render () {
+
+  render() {
     const { products } = this.state
     return (
       <View className='index'>
