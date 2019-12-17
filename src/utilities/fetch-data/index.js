@@ -15,6 +15,7 @@ async function fetchData({
     if (page) queryParams._page = page
     if (pageSize) queryParams._limit = pageSize
 
+    //API_WS来自全局变量config/dev.js
     const url = buildUrl(API_WS, {
         path: resource,
         queryParams

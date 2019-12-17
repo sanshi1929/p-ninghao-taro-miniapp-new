@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { AtPagination } from 'taro-ui'
+import { AtPagination, AtActivityIndicator } from 'taro-ui'
+import _ from 'lodash'
 import SearchBar from '../../components/search-bar'
 import ProductList from '../../components/product-list'
 import Placeholder from '../../components/placeholder'
@@ -20,7 +21,64 @@ class ShopIndex extends Component {
         total: 0,
         pageSize: 2,
         current: 1,
-        serviceError: false
+        serviceError: false,
+        //搜索内容
+        search: '',
+        //搜索中的图标判断
+        searching: false,
+        errorPageMessage: ''
+    }
+
+    async componentWillMount() {
+        this.fetchData({
+            resource: 'products',
+            page: this.state.current,
+            pageSize: this.state.pageSize,
+            success: this.fetchDataSuccess.bind(this),
+            fail: this.fetchDataFail.bind(this)
+
+        })
+
+    }
+
+    debounceSearch = _.debounce(this.search, 500)
+
+    onChangeSearchBar(value) {
+        console.log(value);
+        this.setState({
+            search: value
+        }, () => {
+            this.debounceSearch(this.state.search)
+        })
+    }
+
+    onActionClickSearchBar() {
+        this.search(this.state.search)
+        console.log('action click search')
+    }
+
+    onConfirmSearchBar() {
+        this.search(this.state.search)
+        console.log('confirm search')
+    }
+
+    search(value = '') {
+        console.log(`搜索 : ${value}`)
+
+        this.setState({
+            searching: true,
+            current: 1
+        }, () => {
+            this.fetchData({
+                resource: 'products',
+                search: value,
+                page: this.state.page,
+                pageSize: this.state.pageSize,
+                success: this.fetchDataSuccess.bind(this),
+                fail: this.fetchDataFail.bind(this),
+                complete: this.fetchDataComplete.bind(this)
+            })
+        })
     }
 
     fetchDataSuccess(response) {
@@ -48,19 +106,20 @@ class ShopIndex extends Component {
         })
     }
 
-    async componentWillMount() {
-        this.fetchData({
-            resource: 'products',
-            page: this.state.current,
-            pageSize: this.state.pageSize,
-            success: this.fetchDataSuccess.bind(this),
-            fail: this.fetchDataFail.bind(this)
-
-        })
+    fetchDataComplete() {
+        if (process.env.NODE_ENV === 'development') {
+            setTimeout(() => {
+                this.setState({
+                    searching: false
+                })
+            }, 2000)
+        } else {
+            this.setState({
+                searching: false
+            })
+        }
 
     }
-
-
 
     onPageChange({ current }) {
         this.setState({
@@ -80,20 +139,21 @@ class ShopIndex extends Component {
 
 
     render() {
-        const { products, placeholder, total, pageSize, current, serviceError } = this.state
+        const { products, placeholder, total, pageSize, current, serviceError, searching } = this.state
         const page = (
             <View>
-                <SearchBar />
                 <Placeholder className='m-3' quantity={pageSize} show={placeholder} />
                 {!placeholder && <ProductList data={products} />}
-                <AtPagination
-                    icon
-                    total={parseInt(total)}
-                    pageSize={pageSize}
-                    current={current}
-                    className='my-4'
-                    onPageChange={this.onPageChange.bind(this)}
-                />
+                {total > pageSize &&
+                    <AtPagination
+                        icon
+                        total={parseInt(total)}
+                        pageSize={pageSize}
+                        current={current}
+                        className='my-4'
+                        onPageChange={this.onPageChange.bind(this)}
+                    />
+                }
             </View>
         )
 
@@ -104,6 +164,14 @@ class ShopIndex extends Component {
         )
         return (
             <View>
+                <SearchBar
+                    value={this.state.search}
+                    onChange={this.onChangeSearchBar.bind(this)}
+                    onActionClick={this.onActionClickSearchBar.bind(this)}
+                    onConfirm={this.onConfirmSearchBar.bind(this)}
+                />
+
+                {searching && <AtActivityIndicator className='position-absolute m-3' content='搜索中...' />}
                 {serviceError ? errorPage : page}
             </View>
         )

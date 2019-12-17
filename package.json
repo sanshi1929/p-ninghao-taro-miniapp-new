@@ -45,6 +45,7 @@
     "@tarojs/taro-tt": "1.3.27",
     "@tarojs/taro-weapp": "1.3.27",
     "build-url": "^2.0.0",
+    "lodash": "^4.17.15",
     "nerv-devtools": "^1.5.5",
     "nervjs": "^1.5.5",
     "redux": "^4.0.0",

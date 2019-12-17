@@ -27,7 +27,7 @@ class Placeholder extends Component {
                     show &&
                     items.map(i =>
                         <View key={i} className={classValue}>
-                            <View className='image rectanguler'></View>
+                            <View className='image rectangular'></View>
                             <View className='line'></View>
                             <View className='very shor line'></View>
                         </View>
