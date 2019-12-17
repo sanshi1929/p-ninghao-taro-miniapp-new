@@ -13,7 +13,11 @@ class ProductList extends Component {
             <View className='p-3'>
                 {
                     products.map(product =>
-                        <ProductListItem key={product.id} data={product} />
+                        <ProductListItem
+                          key={product.id}
+                          data={product}
+                          onClick={this.props.onClickListItem.bind(this, product)}
+                        />
                     )
                 }
             </View>

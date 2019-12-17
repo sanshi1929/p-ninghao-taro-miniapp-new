@@ -10,7 +10,8 @@ class Placeholder extends Component {
     static defaultProps = {
         className: '',
         quantity: 1,
-        show: false
+        show: false,
+        type: ''
     }
 
     render() {
@@ -20,16 +21,32 @@ class Placeholder extends Component {
         )
         const quantity = parseInt(this.props.quantity)
         const items = [...Array(quantity).keys()]
-        const { show } = this.props
+        const { show, type } = this.props
         return (
             <View>
                 {
                     show &&
                     items.map(i =>
-                        <View key={i} className={classValue}>
-                            <View className='image rectangular'></View>
-                            <View className='line'></View>
-                            <View className='very shor line'></View>
+                        <View key={i}>
+                            <View className={classValue}>
+                                <View className='image rectangular'></View>
+                                <View className='line'></View>
+                                <View className='very shor line'></View>
+                            </View>
+                            {type === 'product' &&
+                                <View>
+                                    <View className={`${classValue} md-5`}>
+                                        <View className='full line'></View>
+                                        <View className='long line'></View>
+                                    </View>
+                                    <View className={`${classValue} md-5`}>
+                                        <View className='very short'></View>
+                                        <View className='full line'></View>
+                                        <View className='full line'></View>
+                                        <View className='medium line'></View>
+                                    </View>
+                                </View>
+                            }
                         </View>
                     )
 
