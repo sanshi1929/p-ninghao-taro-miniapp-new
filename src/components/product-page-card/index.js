@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text, Image, RichText } from '@tarojs/components'
-import { AtBadge, Swiper, SwiperItem } from 'taro-ui'
+import { View, Text, Image, RichText, Swiper, SwiperItem } from '@tarojs/components'
+import { AtBadge } from 'taro-ui'
 
 class ProductPageCard extends Component {
     static options = {
@@ -11,18 +11,18 @@ class ProductPageCard extends Component {
         return (
             <View className='card mb-2' onClick={this.props.onClick}>
                 <Swiper
-                  className='card-swiper'
-                  indicatorDots={indicatorDots}
-                  indicatorColor='#e5e5e5'
-                  indicatorActiveColor='#ccc'
-                  circular
+                    className='card-swiper'
+                    indicatorDots={indicatorDots}
+                    indicatorColor='#e5e5e5'
+                    indicatorActiveColor='#ccc'
+                    circular
                 >
                     {product.images.map(img =>
                         <SwiperItem key={img.id}>
                             <Image
-                              className='card-img-top'
-                              src={img.src}
-                              mode='aspectFit'
+                                className='card-img-top'
+                                src={img.src}
+                                mode='aspectFit'
                             />
                         </SwiperItem>
                     )}

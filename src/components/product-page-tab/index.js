@@ -4,6 +4,17 @@ import { AtTabs, AtTabsPane, AtList, AtListItem } from 'taro-ui'
 import RichTextWxParse from '../rich-text-wx-parse'
 
 class ProductPageTab extends Component {
+    // constructor(props){
+    //     super(props)
+    //     this.state = {
+    //         data: {
+    //             attributes: []
+    //         },
+    //         activeTab:0,
+    //         tabList: [],
+    //         onClick: () => { }
+    //     }
+    // }
     static options = {
         addGlobalClass: true
     }
@@ -14,18 +25,16 @@ class ProductPageTab extends Component {
         },
         activeTab: 0,
         tabList: [],
-        onClick: () => {
-
-        }
+        onClick: () => { }
     }
     render() {
         const { data: product, activeTab, tabList } = this.props
         return (
             <View className='mx-3 my-5'>
                 <AtTabs
-                  current={activeTab}
-                  tabList={tabList}
-                  onClick={this.props.onClick}
+                    current={activeTab}
+                    tabList={tabList}
+                    onClick={this.props.onClick}
                 >
                     <AtTabsPane className='mt-4' current={activeTab} index={0}>
                         <RichTextWxParse content={product.description} />
@@ -34,16 +43,15 @@ class ProductPageTab extends Component {
                         <AtList hasdBorder={false}>
                             {product.attributes.map(attr =>
                                 <AtListItem
-                                  key={attr.id}
-                                  hasBorder={false}
-                                  title={attr.name}
-                                  note={attr.options}
+                                    key={attr.id}
+                                    hasBorder={false}
+                                    title={attr.name}
+                                    note={attr.options}
                                 />
                             )}
                         </AtList>
                     </AtTabsPane>
                 </AtTabs>
-
             </View>
         )
     }

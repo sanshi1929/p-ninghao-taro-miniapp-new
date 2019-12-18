@@ -23,6 +23,7 @@ class ProductShow extends Component {
     }
 
     constructor() {
+
         this.fetchData = fetchData
 
         const { id = 1, name } = this.$router.params
@@ -102,7 +103,7 @@ class ProductShow extends Component {
             complete: this.fetchDataComplete.bind(this)
         })
     }
-    onClickTab(activeTab) {
+    onClickTab = (activeTab) => {
         this.setState({
             activeTab
         })
@@ -122,10 +123,10 @@ class ProductShow extends Component {
                     <View>
                         <ProductPageCard data={product} indicatorDots={indicatorDots} />
                         <ProductPageTab
-                          data={product}
-                          tabList={tabList}
-                          activeTab={activeTab}
-                          onClick={this.onClickTab}
+                            data={product}
+                            tabList={tabList}
+                            activeTab={activeTab}
+                            onClick={this.onClickTab}
                         />
                     </View>
                 }
