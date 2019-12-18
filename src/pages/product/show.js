@@ -3,6 +3,8 @@ import { View } from '@tarojs/components'
 import fetchData from '../../utilities/fetch-data'
 import Placeholder from '../../components/placeholder'
 import ErrorPage from '../../components/error-page'
+import ProductPageCard from '../../components/product-page-card'
+import ProductPageTab from '../../components/product-page-tab'
 
 class ProductShow extends Component {
     config = {
@@ -15,7 +17,9 @@ class ProductShow extends Component {
         product: {},
         placeholder: true,
         serviceError: false,
-        errorPageMessage: ''
+        errorPageMessage: '',
+        indicatorDots: false,
+        activeTab: 0
     }
 
     constructor() {
@@ -46,6 +50,13 @@ class ProductShow extends Component {
         this.setState({
             product: data
         })
+
+        if (data.images.length > 1) {
+            this.setState({
+                indicatorDots: true
+            })
+        }
+
         Taro.setNavigationBarTitle({
             title: data.name
         })
@@ -91,16 +102,31 @@ class ProductShow extends Component {
             complete: this.fetchDataComplete.bind(this)
         })
     }
+    onClickTab(activeTab) {
+        this.setState({
+            activeTab
+        })
+    }
 
     render() {
-        const { product, placeholder, serviceError, errorPageMessage } = this.state
+        const { product, placeholder, serviceError, errorPageMessage, indicatorDots, activeTab } = this.state
+        const tabList = [
+            { title: '描述' },
+            { title: '参数' }
+        ]
 
         const page = (
             <View>
                 <Placeholder className='m-3' show={placeholder} type='product' />
                 {!placeholder &&
-                    <View className='page-demo'>
-                        {product.name}
+                    <View>
+                        <ProductPageCard data={product} indicatorDots={indicatorDots} />
+                        <ProductPageTab
+                          data={product}
+                          tabList={tabList}
+                          activeTab={activeTab}
+                          onClick={this.onClickTab}
+                        />
                     </View>
                 }
             </View>
