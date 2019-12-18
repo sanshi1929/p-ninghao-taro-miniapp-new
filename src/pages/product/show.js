@@ -5,6 +5,8 @@ import Placeholder from '../../components/placeholder'
 import ErrorPage from '../../components/error-page'
 import ProductPageCard from '../../components/product-page-card'
 import ProductPageTab from '../../components/product-page-tab'
+import ProductPageTabBar from '../../components/product-page-tab-bar'
+import MaterialIcon from '../../components/material-icon'
 
 class ProductShow extends Component {
     config = {
@@ -103,6 +105,8 @@ class ProductShow extends Component {
             complete: this.fetchDataComplete.bind(this)
         })
     }
+
+    //这里和教程不同， 用了箭头函数解决错误
     onClickTab = (activeTab) => {
         this.setState({
             activeTab
@@ -122,11 +126,20 @@ class ProductShow extends Component {
                 {!placeholder &&
                     <View>
                         <ProductPageCard data={product} indicatorDots={indicatorDots} />
+                        <MaterialIcon className='m-3' icon='ac_unit' size='24' color='#000' />
                         <ProductPageTab
-                            data={product}
-                            tabList={tabList}
-                            activeTab={activeTab}
-                            onClick={this.onClickTab}
+                          data={product}
+                          tabList={tabList}
+                          activeTab={activeTab}
+                          onClick={this.onClickTab}
+                        />
+                        <ProductPageTabBar
+                          primary='立即购买'
+                          secondary='加入购物车'
+                          icon='shopping_basket'
+                          disabled={false}
+                          disabledText='暂时无货'
+                          onClick={this.onClickTabBar}
                         />
                     </View>
                 }
